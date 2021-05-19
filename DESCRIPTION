@@ -1,7 +1,7 @@
 Package: mzID
 Type: Package
 Title: An mzIdentML parser for R
-Version: 1.30.0
+Version: 1.31.0
 Authors@R: c(person(given = "Laurent", family = "Gatto",
 		    email = "laurent.gatto@uclouvain.be",
 		    comment = c(ORCID = "0000-0002-1520-2268"),
