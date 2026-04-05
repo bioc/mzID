@@ -3,29 +3,29 @@
 NULL
 
 #' A class to store database information from an mzIdentML file
-#' 
+#'
 #' This class handles parsing and storage of database information from mzIDentML
 #' files, residing at the /MzIdentML/SequenceCollection/DBSequence node.
-#' 
-#' The content of the class is stored in a data.frame with columns depending on 
-#' the content of the mzIdentML file. Required information for files conforming 
-#' to the mzIdentML standard are: 'accession', 'searchDatabase_ref' and 'id', 
-#' while additional information can fx be 'length' (number of residues), 
+#'
+#' The content of the class is stored in a data.frame with columns depending on
+#' the content of the mzIdentML file. Required information for files conforming
+#' to the mzIdentML standard are: 'accession', 'searchDatabase_ref' and 'id',
+#' while additional information can fx be 'length' (number of residues),
 #' 'description' (from the fasta file) and 'sequence' (the actual sequence).
-#' 
+#'
 #' @section Objects from the class:
 #' Objects of mzIDdatabase are not meant to be created explicitly but as part of
-#' the \code{\link{mzID-class}}. Still object can be created with the 
+#' the \code{\link{mzID-class}}. Still object can be created with the
 #' constructor \code{\link{mzIDdatabase}}.
-#' 
-#' 
-#' @slot database A data.frame containing references to all the database 
+#'
+#'
+#' @slot database A data.frame containing references to all the database
 #' sequences from the mzIdentML file
-#' 
-#' 
+#'
+#'
 #' @family mzID-classes
 #' @seealso \code{\link{mzIDdatabase}}
-#' 
+#'
 setClass(
     'mzIDdatabase',
     slots=list(
@@ -37,9 +37,9 @@ setClass(
 )
 
 #' @describeIn mzIDdatabase Short summary of the content of the object
-#' 
+#'
 #' @param object An mzIDevidence object
-#' 
+#'
 setMethod(
     'show', 'mzIDdatabase',
     function(object){
@@ -52,9 +52,9 @@ setMethod(
 )
 
 #' @describeIn mzIDdatabase Report the number of proteins in the database
-#' 
+#'
 #' @param x An mzIDdatabase object
-#' 
+#'
 setMethod(
     'length', 'mzIDdatabase',
     function(x){
@@ -62,12 +62,12 @@ setMethod(
     }
 )
 #' @describeIn mzIDdatabase Get the database used for searching
-#' 
+#'
 #' @param safeNames Should column names be lowercased to ensure compatibility
 #' between v1.0 and v1.1 files?
-#' 
+#'
 #' @importFrom ProtGenerics database
-#' 
+#'
 setMethod(
     'database', 'mzIDdatabase',
     function(object, safeNames=TRUE){
@@ -79,29 +79,29 @@ setMethod(
     }
 )
 #' A constructor for the mzIDdatabase class
-#' 
-#' This function handles parsing of data and construction of an mzIDdatabase 
-#' object. This function is not intended to be called explicitly but as part of 
+#'
+#' This function handles parsing of data and construction of an mzIDdatabase
+#' object. This function is not intended to be called explicitly but as part of
 #' an mzID construction. Thus, the function is not exported.
-#' 
-#' @param doc an \code{XMLInternalDocument} created using 
+#'
+#' @param doc an \code{XMLInternalDocument} created using
 #' \code{\link[XML]{xmlInternalTreeParse}}
-#' 
-#' @param ns The appropriate namespace for the doc, as a named character vector 
+#'
+#' @param ns The appropriate namespace for the doc, as a named character vector
 #' with the namespace named x
-#' 
-#' @param addFinalizer \code{Logical} Sets whether reference counting should be 
+#'
+#' @param addFinalizer \code{Logical} Sets whether reference counting should be
 #' turned on
-#' 
+#'
 #' @param path If doc is missing the file specified here will be parsed
-#' 
+#'
 #' @return An \code{mzIDdatabase} object
-#' 
+#'
 #' @seealso \code{\link{mzIDdatabase-class}}
-#' 
+#'
 #' @importFrom XML getNodeSet xmlValue
 #' @export
-#' 
+#'
 mzIDdatabase <- function(doc, ns, addFinalizer=FALSE, path){
     if (missing(doc)) {
         if (missing(path)) {
@@ -129,7 +129,7 @@ mzIDdatabase <- function(doc, ns, addFinalizer=FALSE, path){
                                      'cvParam', 'name', addFinalizer=addFinalizer)
             hasRightName <- as.logical(hasName)
             hasRightName[hasRightName] <-
-                sapply(split(dbnames == 'protein description', rep(seq(along=hasName), hasName)), any)
+                sapply(split(dbnames == 'protein description', rep(seq(along.with=hasName), hasName)), any)
             dbnames1 <- mapply(sub, paste('^\\Q',database$accession[hasRightName], '\\E', ' ', sep=''), '', dbnames1)
             database$description <- NA
             database$description[hasRightName] <- dbnames1
